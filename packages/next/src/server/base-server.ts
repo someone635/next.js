@@ -1229,29 +1229,18 @@ export default abstract class Server<
               params = paramsResult.params
             }
 
+            const routeMatchesHeader = req.headers['x-now-route-matches']
             if (
-              req.headers['x-now-route-matches'] &&
+              typeof routeMatchesHeader === 'string' &&
+              routeMatchesHeader &&
               isDynamicRoute(matchedPath) &&
               !paramsResult.hasValidParams
             ) {
-              const opts: Record<string, string> = {}
-              const routeParams = utils.getParamsFromRouteMatches(
-                req,
-                opts,
-                getRequestMeta(req, 'locale')
-              )
+              const routeMatches =
+                utils.getParamsFromRouteMatches(routeMatchesHeader)
 
-              // If this returns a locale, it means that the locale was detected
-              // from the pathname.
-              if (opts.locale) {
-                addRequestMeta(req, 'locale', opts.locale)
-
-                // As the locale was parsed from the pathname, we should mark
-                // that the locale was not inferred as the default.
-                removeRequestMeta(req, 'localeInferredFromDefault')
-              }
               paramsResult = utils.normalizeDynamicRouteParams(
-                routeParams,
+                routeMatches,
                 true
               )
 
