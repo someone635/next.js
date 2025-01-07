@@ -114,35 +114,37 @@ export function ErrorOverlayPagination({
   }, [nav, activeIdx, readyErrors.length])
 
   return (
-    <div data-nextjs-dialog-left-right>
-      <nav ref={onNav}>
-        <button
-          ref={buttonLeft}
-          type="button"
-          disabled={activeIdx === 0}
-          aria-disabled={activeIdx === 0}
-          onClick={handlePrevious}
-        >
-          <LeftArrow title="previous" />
-        </button>
-        <button
-          ref={buttonRight}
-          type="button"
-          disabled={activeIdx === readyErrors.length - 1}
-          aria-disabled={activeIdx === readyErrors.length - 1}
-          onClick={handleNext}
-        >
-          <RightArrow title="next" />
-        </button>
-        <small>
-          <span>{activeIdx + 1}</span> of{' '}
-          <span data-nextjs-dialog-header-total-count>
-            {readyErrors.length}
-          </span>
-          {' issue'}
-          {readyErrors.length < 2 ? '' : 's'}
-        </small>
-      </nav>
-    </div>
+    <nav className="error-overlay-pagination" ref={onNav}>
+      <button
+        ref={buttonLeft}
+        type="button"
+        disabled={activeIdx === 0}
+        aria-disabled={activeIdx === 0}
+        onClick={handlePrevious}
+        className="error-overlay-pagination-button error-overlay-pagination-button-left"
+      >
+        <LeftArrow
+          title="previous"
+          className="error-overlay-pagination-button-icon"
+        />
+      </button>
+      <div className="error-overlay-pagination-count">
+        <span>{activeIdx + 1}/</span>
+        <span data-nextjs-dialog-header-total-count>{readyErrors.length}</span>
+      </div>
+      <button
+        ref={buttonRight}
+        type="button"
+        disabled={activeIdx === readyErrors.length - 1}
+        aria-disabled={activeIdx === readyErrors.length - 1}
+        onClick={handleNext}
+        className="error-overlay-pagination-button error-overlay-pagination-button-right"
+      >
+        <RightArrow
+          title="next"
+          className="error-overlay-pagination-button-icon"
+        />
+      </button>
+    </nav>
   )
 }
